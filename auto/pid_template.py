@@ -39,12 +39,23 @@ def update(car: dict, throttle_perc: float, mass: float = 1000, max_throttle_for
         car["t"] += car["dt"]
         car["step"] += 1
 
+        """
+       Tania notes:
+        error = desired_v - car["v"] (how far you are from the target)
+        desired acceleration = K_P * error (a bigger gap means more acceleration)
+
+        friction takes aways 2 form acceleration 
+        acceleration = push - 2
+        steady state error: K_P * gap = 2
+        """
 
 def calculate_desired_acceleration(car: dict, K_P: float, K_I: float = 0.0, K_D: float = 0.0) -> tuple[float, float]:
         #input: car["v"], car["desired_v"] (floats)
         #output: desired acceleration and error tuple(float, float)
-        pass # delete this line and write your PID code here
-
+        error = car["desired_v"] - car["v"] # desired velocity - current velocity (in car dictionary)
+        desired_acceleration = K_P * error # K_P * error
+        return desired_acceleration, error # both acceleration then error
+        
 
 
 
