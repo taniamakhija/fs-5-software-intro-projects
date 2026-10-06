@@ -73,5 +73,5 @@ def acceleration_to_throttle_percentage(acceleration_desired: float, mass: float
         #output: throttle percentage (float, -1 to 1)
         max_acceleration = max_throttle_force / mass # full gass = 5000  - 5000/1000 = 5 = 100%
         throttle = acceleration_desired / max_acceleration #x/5
-        throttle = (throttle, -1, 1)
+        throttle = np.clip(throttle, -1, 1) # np.clip(a, a_min, a_max)
         return throttle
