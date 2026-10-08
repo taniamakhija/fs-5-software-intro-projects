@@ -20,7 +20,7 @@ errors = []
 times = []
 
 for step in range(STEPS): # repeats 550 times
-    desired_acceleration, error = calculate_desired_acceleration(car, K_P, K_I) # how much does car want to speed
+    desired_acceleration, error = calculate_desired_acceleration(car, K_P, K_I, K_D) # how much does car want to speed
     throttle = acceleration_to_throttle_percentage(desired_acceleration) # gas pedal position
     update(car, throttle) # upadates car speed - presses pedal so car moves
     print(car["v"]) # car new speed, car speed 0.3 (output)
@@ -60,4 +60,16 @@ so at some speed the gas gets so less that it only matches friction, then the ca
 when num is far from 20  the car speeds up fast 
 near 16 -  the gas is weak - only as strong as friction
 at 16 - gas is same as  friction so stays at 16
+'''
+
+'''
+K_D * (de / dt)
+de = tick's errors - last tick's error
+dt = tick length (0,1)
+de/dt - how fast error is changing 
+
+P - how far off car is are right now
+I - how long car has been off
+D - how fast the error is changing
+
 '''

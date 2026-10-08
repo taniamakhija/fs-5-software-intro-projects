@@ -64,7 +64,13 @@ def calculate_desired_acceleration(car: dict, K_P: float, K_I: float = 0.0, K_D:
         #output: desired acceleration and error tuple(float, float)
         error = car["desired_v"] - car["v"] # desired velocity - current velocity (in car dictionary)
         car["net_integral"] += error * car["dt"] # error from right no added to total 
+        if car["error_prev"] is None:
+            de = 0
+        else:
+            de = error - car["error_prev"]  # how much the error changed since the last tick
+        derivative = de / car["dt"] # how fast it's changing de/0.1
         desired_acceleration = K_P * error + K_I * car["net_integral"] # acceleration based on how far off the car is now (P) + how long it has been off (I)
+        car["error_prev"] = error # saves tick error in the car dictionary
         return desired_acceleration, error # both acceleration then error
         
 #first function states i want the car to speed up by abc, second function transaltes that into pedal position
