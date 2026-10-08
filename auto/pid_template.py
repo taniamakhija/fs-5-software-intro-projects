@@ -49,11 +49,22 @@ def update(car: dict, throttle_perc: float, mass: float = 1000, max_throttle_for
         steady state error: K_P * gap = 2
         """
 
+        '''
+        integral term - keeps running total of far off from desired velocity 
+        --> adds to gas so the push gets stronger than friction , so car reaches 20 
+        --> once error hits 0, stops growing and holds the push
+
+        net_integral = (sum of error * dt)
+        error * dt is error for one tick , how farr off times how long 
+
+        '''
+
 def calculate_desired_acceleration(car: dict, K_P: float, K_I: float = 0.0, K_D: float = 0.0) -> tuple[float, float]:
         #input: car["v"], car["desired_v"] (floats)
         #output: desired acceleration and error tuple(float, float)
         error = car["desired_v"] - car["v"] # desired velocity - current velocity (in car dictionary)
-        desired_acceleration = K_P * error # K_P * error
+        car["net_integral"] += error * car["dt"] # error from right no added to total 
+        desired_acceleration = K_P * error + K_I * car["net_integral"] # acceleration based on how far off the car is now (P) + how long it has been off (I)
         return desired_acceleration, error # both acceleration then error
         
 #first function states i want the car to speed up by abc, second function transaltes that into pedal position

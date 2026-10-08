@@ -20,7 +20,7 @@ errors = []
 times = []
 
 for step in range(STEPS): # repeats 550 times
-    desired_acceleration, error = calculate_desired_acceleration(car, K_P) # how much does car want to speed
+    desired_acceleration, error = calculate_desired_acceleration(car, K_P, K_I) # how much does car want to speed
     throttle = acceleration_to_throttle_percentage(desired_acceleration) # gas pedal position
     update(car, throttle) # upadates car speed - presses pedal so car moves
     print(car["v"]) # car new speed, car speed 0.3 (output)
@@ -45,3 +45,19 @@ plt.plot(times, errors) # draws line
 plt.title("Error over Time") # title 
 
 plt.show() # shows both graphs
+
+'''
+steady state error = gap that's left over 
+steady state - car stopped changing speed , in steady speed
+error - distance it needs to catch up to reach the target
+'''
+
+'''
+The closer the car gets to the target the less the controller presses the gas -  friction gets less its always pulling back by the same amount
+
+so at some speed the gas gets so less that it only matches friction, then the car stops speeding up and jsut keeps movementum which is  short of target
+
+when num is far from 20  the car speeds up fast 
+near 16 -  the gas is weak - only as strong as friction
+at 16 - gas is same as  friction so stays at 16
+'''
