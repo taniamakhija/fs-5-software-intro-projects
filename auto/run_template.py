@@ -6,7 +6,7 @@ from pid_template import acceleration_to_throttle_percentage
 
 # K_P = 0.1 , 0.1 * 20 = 2 , but fiction takes away 2 so car never moves...
 K_P = 0.5
-K_I = 0.1
+K_I = 0.03
 K_D = 0.1
  
 STEPS = 550
