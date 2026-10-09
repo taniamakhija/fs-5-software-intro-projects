@@ -24,7 +24,20 @@ times = []
 for step in range(STEPS): # repeats 550 times
     desired_acceleration, error = calculate_desired_acceleration(car, K_P, K_I, K_D) # how much does car want to speed
     throttle = acceleration_to_throttle_percentage(desired_acceleration) # gas pedal position
-    update(car, throttle) # upadates car speed - presses pedal so car moves
+
+# Add in additional forces against the car, increasing friction (simulation)
+    if step < 150: # ticks from 0 to 199 
+        friction = 2.0 # normal friction
+    elif step < 250: # ticks from 200 to 349
+        friction = 4.0 # abnormal friction (rough road)
+    elif step < 350: 
+        friction = 2.0 # back to normal, lets it recover
+    elif step < 450:
+        friction = 1.0 # less friction
+    else:
+        friction = 2.0     # back to normal
+    update(car, throttle, friction=friction)
+
     print(car["v"]) # car new speed, car speed 0.3 (output)
     #adds num to list
     velocities.append(car["v"])
