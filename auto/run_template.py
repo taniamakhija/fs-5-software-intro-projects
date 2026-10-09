@@ -22,9 +22,6 @@ errors = []
 times = []
 
 for step in range(STEPS): # repeats 550 times
-    desired_acceleration, error = calculate_desired_acceleration(car, K_P, K_I, K_D) # how much does car want to speed
-    throttle = acceleration_to_throttle_percentage(desired_acceleration) # gas pedal position
-
 # Add in additional forces against the car, increasing friction (simulation)
     if step < 150: # ticks from 0 to 199 
         friction = 2.0 # normal friction
@@ -36,6 +33,18 @@ for step in range(STEPS): # repeats 550 times
         friction = 1.0 # less friction
     else:
         friction = 2.0     # back to normal
+    
+#minimizing velocity instability during the increased friction
+    if friction != 2.0:  # road rougher
+       #kp, ki, kd = 1.0, 0.1, 0.1  # first try , barely changed anything 
+       #kp, ki, kd = K_P, K_I, K_D #baseline, no changes
+       #kp, ki, kd = 5.0, 0.0, 0.0 # extreme test,  dip gone but flat gap of 0.8 (ki was 0)
+       kp, ki, kd = 3.0, K_I, K_D # current . 
+    else: # if otherwise
+        kp, ki, kd = K_P, K_I, K_D # use your normal dials from the top of the file
+
+    desired_acceleration, error = calculate_desired_acceleration(car, kp, ki, kd) # how much does car want to speed
+    throttle = acceleration_to_throttle_percentage(desired_acceleration) # gas pedal position
     update(car, throttle, friction=friction)
 
     print(car["v"]) # car new speed, car speed 0.3 (output)
