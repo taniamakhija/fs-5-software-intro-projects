@@ -1,4 +1,6 @@
-def make_car_2d(desired_v:float=20.0, dt:float=0.1) -> dict:
+import numpy as np
+
+def make_car_2d(desired_v:float=12.0, dt:float=0.1, wheelbase:float=1.55) -> dict:
     """ 
     Generates a dictionary that holds all the car's values. Keeps track of state varaibles.
     """
